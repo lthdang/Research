@@ -40,5 +40,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          * Logout Routes
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        Route::get('/post', 'PostController@index')->name('post.list');
+        Route::post('/post', 'PostController@create')->name('post.create');
+        Route::put('/post/{id}', 'PostController@store')->name('post.update');
+        Route::delete('/post/{id}', 'PostController@pdelete')->name('post.delete');
     });
 });
