@@ -38,10 +38,6 @@ class LoginRequest extends FormRequest
      */
     public function getCredentials()
     {
-        // The form field for providing username or password
-        // have name of "username", however, in order to support
-        // logging users in with both (username and email)
-        // we have to check if user has entered one or another
         $username = $this->get('username');
 
         if ($this->isEmail($username)) {

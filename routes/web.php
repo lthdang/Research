@@ -36,13 +36,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     });
 
     Route::group(['middleware' => ['auth']], function() {
-        /**
-         * Logout Routes
-         */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
-        Route::get('/post', 'PostController@index')->name('post.list');
-        Route::post('/post', 'PostController@create')->name('post.create');
-        Route::put('/post/{id}', 'PostController@store')->name('post.update');
-        Route::delete('/post/{id}', 'PostController@pdelete')->name('post.delete');
+        Route::get('/posts', 'PostController@index')->name('posts.list');
+        Route::get('/posts/create', 'PostController@create')->name('posts.create');
+        Route::post('/posts', 'PostController@store')->name('posts.stored');
+        Route::get('/posts/{id}/edit', 'PostController@edit')->name('posts.edit');
+        Route::put('/posts/{id}', 'PostController@update')->name('posts.update');
+        Route::delete('/posts/{id}', 'PostController@delete')->name('posts.delete');
     });
 });

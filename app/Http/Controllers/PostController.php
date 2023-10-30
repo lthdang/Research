@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -10,47 +10,105 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * list blog post
+     * list blog posts
      *
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function index()
     {
-        $posts = Post::all();
+        $user_id = auth()->user()->id;
+        $posts = Post::where('user_id', $user_id)->get();
         return view('home.index',compact('posts'));
     }
     /**
-     * list blog post
+     * list blog posts
      *
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function create()
     {
-        $posts = Post::find();
+        $categories = Category::all()->pluck('name', 'id');
+        $post = new Post;
 
-        return view('home.index',compact('posts'));
-    }   /**
- * list blog post
+        return view('posts.create', compact('post', 'categories'));
+    }  /**
+ * list blog posts
  *
  *
  * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
  */
-    public function store($id)
+    public function store(Request $request)
     {
-        $posts = Post::find($id);
-        return view('home.index',compact('posts'));
+        $title = $request->input('title');
+        $content = $request->input('content');
+        $describeShort = $request->input('describe_short');
+        $category_id = $request->input('category_id');
+        $status =$request->input('status');
+        $post = new Post;
+        $post->title = $title;
+        $post->content = $content;
+        $post->describe_short = $describeShort;
+        $post->category_id = $category_id;
+        $post->user_id = auth()->user()->id;
+        $post->status = $status;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $post->image_path = $imageName;
+        }
+        $post->save();
+        return redirect()->route('home.index');
     }
     /**
-     * list blog post
+     * list blog posts
      *
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function delete($id)
     {
-        $posts = Post::deleted($id);
-        return view('home.index',compact('posts'));
+        $post = Post::find($id);
+        if ($post) {
+            $post->delete();
+        }
+        $posts = Post::all();
+        return redirect()->route('home.index');
     }
+    /**
+     * list blog posts
+     *
+     *
+     * @return  \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
+     */
+    public function edit($id)
+    {
+        $post = Post::findOrFail($id);
+        $categories = Category::all()->pluck('name', 'id');
+        return view('posts.edit', compact('post', 'categories'));
+    }
+    public function update(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->describe_short = $request->input('describe_short');
+        $post->category_id = $request->input('category_id');
+        $post->status = $request->input('status');
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $post->image_path = $imageName;
+        }
+
+        $post->save();
+
+        return redirect()->route('home.index');
+    }
+
 }
