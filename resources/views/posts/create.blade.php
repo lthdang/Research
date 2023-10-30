@@ -22,7 +22,7 @@
 
         <div class="form-group">
             {!! Form::label('describe_short', 'Short Description') !!}
-            {!! Form::text('describe_short', null, ['class' => 'form-control']) !!}
+            {!! Form::textarea('describe_short', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
         </div>
 
         <div class="form-group">
