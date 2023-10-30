@@ -14,10 +14,12 @@
             </form>
 
             @auth
-                {{auth()->user()->name}}
-                <div class="text-end">
-                    <a href="{{route('home.index')}}"  class="btn btn-outline-light me-2">admin</a>
-                    <a href="{{ route('logout.perform') }}" class="btn btn-outline-light me-2">Logout</a>
+                <div class="dropdown">
+                    <a href="#" class="btn btn-outline-light me-2" data-bs-toggle="dropdown" data-bs-target="#accountDropdown">{{ auth()->user()->username }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Update account information</a></li>
+                        <li><a class="dropdown-item" href="{{ route('logout.perform') }}">Logout</a></li>
+                    </ul>
                 </div>
             @endauth
 

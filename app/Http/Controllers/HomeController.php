@@ -15,8 +15,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('status', 'published')->get();
-        return view('home.index',compact('posts'));
+        if (auth()->check()) {
+            $user_id = auth()->user()->id;
+            $posts = Post::where('user_id', $user_id)->get();
+        } else {
+            $posts = Post::where('status', 'published')->get();
+        }
+
+        return view('home.index', compact('posts'));
     }
 
 }

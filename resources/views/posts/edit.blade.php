@@ -14,7 +14,7 @@
 
         <div class="form-group">
             {!! Form::label('content', 'Content') !!}
-            {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
+            {!! Form::textarea('content', $post->content, ['class' => 'form-control', 'id' => 'content-editor']) !!}
         </div>
 
         <div class="form-group">
@@ -56,4 +56,6 @@
                 });
         });
     </script>
-    </html>
+    {!! Form::close() !!}
+    </div>
+@endsection

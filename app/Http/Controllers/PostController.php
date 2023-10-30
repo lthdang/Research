@@ -58,7 +58,7 @@ class PostController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
-            $post->image_path = $imageName;
+            $post->image_path ='images/' . $imageName;
         }
         $post->save();
         return redirect()->route('home.index');
@@ -103,12 +103,20 @@ class PostController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
-            $post->image_path = $imageName;
+
+            if ($post->image_path) {
+                $oldImagePath = public_path( $post->image_path);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+            $post->image_path = 'images/' . $imageName;
         }
+
 
         $post->save();
 
-        return redirect()->route('home.index');
+        return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được cập nhật.');
     }
 
 }
