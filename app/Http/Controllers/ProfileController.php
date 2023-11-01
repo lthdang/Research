@@ -20,7 +20,6 @@ class ProfileController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             if ($user->avatar) {
-                // Nếu có, xóa ảnh cũ
                 $oldAvatarPath = public_path($user->avatar);
                 if (file_exists($oldAvatarPath)) {
                     unlink($oldAvatarPath);

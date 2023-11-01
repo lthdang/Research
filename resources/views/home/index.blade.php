@@ -1,46 +1,66 @@
 @extends('layouts.app-master')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        setTimeout(function() {
+    $(document).ready(function () {
+        setTimeout(function () {
             $('#success-alert').fadeOut('fast');
-        }, 5000);
+        }, 3000);
     });
 </script>
+<style>
+    a.post-title {
+        text-decoration: none;
+        color: #333;
+    }
+
+    a.post-title:hover {
+        color: #00CC99;
+    }
+</style>
 
 @section('content')
+    @if(session('success'))
+        <div id="success-alert" class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="bg-light p-5 rounded">
         @auth
             <h1>Dashboard</h1>
             <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary" role="button">New Post</a>
-            @if(session('success'))
-                <div id="success-alert" class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
             <div class="post">
                 <div class="card">
-                    @foreach($posts as $post)
+                    @foreach($posts->sortByDesc('id') as $post)
                         <div class="post">
                             <div class="card">
                                 <table>
                                     <tr>
                                         <th>
-                                            <h2>{{$post->title}}</h2>
+                                            <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
+                                                <h2>{{$post->title}}</h2></a>
                                             <div class="form-group">
-                                                <img src="{{ asset($post->image_path) }}" class="img-thumbnail" style="max-width: 200px;">
+                                                <img src="{{ asset($post->image_path) }}" class="img-thumbnail"
+                                                     style="max-width: 200px;">
                                             </div>
-                                            <p>{{$post->describe_short}}</p>
+                                            <div class="post-content">
+                                                {!! $post->describe_short !!}
+                                            </div>
                                         </th>
                                         <th>
-                                            <form action="{{ route('posts.edit', ['id' => $post->id]) }}" style="display: inline;">
-                                                <button type="submit" class="btn btn-lg btn-primary" role="button">Update</button>
+                                            <form action="{{ route('posts.edit', ['id' => $post->id]) }}"
+                                                  style="display: inline;">
+                                                <button type="submit" class="btn btn-lg btn-primary" role="button">
+                                                    Update
+                                                </button>
                                             </form>
 
-                                            <form action="{{ route('posts.delete', ['id' => $post->id]) }}" method="POST" style="display: inline;">
+                                            <form action="{{ route('posts.delete', ['id' => $post->id]) }}"
+                                                  method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-lg btn-danger" role="button">Delete</button>
+                                                <button type="submit" class="btn btn-lg btn-danger" role="button">
+                                                    Delete
+                                                </button>
                                             </form>
                                         </th>
                                     </tr>
@@ -48,18 +68,17 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         @endauth
 
         @guest
             <h1>Posts</h1>
-            @foreach($posts as $post)
+            @foreach($posts->sortByDesc('created_at') as $post)
                 <div class="post">
                     <div class="card">
-                        <h2>{{$post->title}}</h2>
-                        <p>{{$post->created_at}}</p>
+                        <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
+                            <h5>{{$post->title}}</h5></a>
                         <div class="form-group">
                             <img src="{{ asset($post->image_path) }}" class="img-thumbnail" style="max-width: 200px;">
                         </div>
@@ -68,5 +87,8 @@
                 </div>
             @endforeach
         @endguest
+    </div>
+    <div class="pagination">
+        {{ $posts->links() }}
     </div>
 @endsection
