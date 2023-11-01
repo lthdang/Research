@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -21,6 +22,30 @@ class PostController extends Controller
         $posts = Post::where('user_id', $user_id)->get();
         return view('home.index',compact('posts'));
     }
+
+    /**
+     *
+     * search blog post
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
+     */
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $posts = Post::where('title', 'like', "%$keyword%")
+            ->orWhere('content', 'like', "%$keyword%")
+            ->paginate(10);
+        return view('posts.search_results', compact('posts', 'keyword'));
+    }
+
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        $author = User::find($post->user_id);
+        return view('posts.show', compact('post', 'author'));
+    }
+
     /**
      * list blog posts
      *
@@ -33,12 +58,14 @@ class PostController extends Controller
         $post = new Post;
 
         return view('posts.create', compact('post', 'categories'));
-    }  /**
- * list blog posts
- *
- *
- * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
- */
+    }
+
+    /**
+     * list blog posts
+     *
+     *
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function store(Request $request)
     {
         $title = $request->input('title');

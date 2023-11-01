@@ -17,9 +17,9 @@ class HomeController extends Controller
     {
         if (auth()->check()) {
             $user_id = auth()->user()->id;
-            $posts = Post::where('user_id', $user_id)->get();
+            $posts = Post::where('user_id', $user_id)->paginate(10)->onEachSide(1);
         } else {
-            $posts = Post::where('status', 'published')->get();
+            $posts = Post::where('status', 'published')->paginate(10)->onEachSide(1);
         }
 
         return view('home.index', compact('posts'));
