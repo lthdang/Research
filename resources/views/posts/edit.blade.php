@@ -16,9 +16,11 @@
             {!! Form::label('content', 'Content') !!}
             {!! Form::textarea('content', $post->content, ['class' => 'form-control', 'id' => 'content-editor']) !!}
         </div>
-
         <div class="form-group">
             {!! Form::label('image', 'Image') !!}
+            @if ($post->image_path)
+                <img src="{{ asset($post->image_path) }}" alt="Current Image" class="img-thumbnail" style="max-width: 100px;">
+            @endif
             {!! Form::file('image', ['class' => 'form-control']) !!}
         </div>
 

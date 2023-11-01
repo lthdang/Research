@@ -19,6 +19,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
      * Home Routes
      */
     Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/posts/{id}/detail', 'PostController@show')->name('posts.show');
+    Route::get('/posts/search', 'PostController@search')->name('posts.search');
+    Route::fallback(function () {
+        return view('errors.404');
+    });
+
 
     Route::group(['middleware' => ['guest']], function() {
         /**
