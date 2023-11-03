@@ -24,6 +24,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::fallback(function () {
         return view('errors.404');
     });
+    Route::get('/posts/{category}/category', 'PostController@getPostsByCategory')->name('posts.byCategory');
+
 
 
     Route::group(['middleware' => ['guest']], function() {

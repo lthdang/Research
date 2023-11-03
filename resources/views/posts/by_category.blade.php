@@ -3,10 +3,9 @@
     @include('posts.category')
 @endsection
 @section('content')
-    <div class="bg-light p-5 rounded">
-        <h1>Search Results for <b>"{{ $keyword }}"</b></h1>
-
-        @forelse($posts as $post)
+    <h1>Posts</h1>
+    @if ($posts->count() > 0)
+        @foreach($posts as $post)
             <div class="post">
                 <div class="card">
                     <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
@@ -18,9 +17,8 @@
                     <p>{{ $post->describe_short }}</p>
                 </div>
             </div>
-        @empty
-            <p>No results found for "{{ $keyword }}"</p>
-        @endforelse
-    </div>
+        @endforeach
+    @else
+        <p>No results found for this category.</p>
+    @endif
 @endsection
-

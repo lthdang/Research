@@ -13,9 +13,9 @@
                 </li>
             </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="{{ route('posts.search') }}">
-                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+                @csrf
+                <input type="search" name="keyword" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
             </form>
-
             @auth
                 <div class="dropdown">
                     <a href="#" class="btn btn-outline-light me-2" data-bs-toggle="dropdown" data-bs-target="#accountDropdown">

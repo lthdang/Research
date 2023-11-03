@@ -1,23 +1,7 @@
 @extends('layouts.app-master')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        setTimeout(function () {
-            $('#success-alert').fadeOut('fast');
-        }, 3000);
-    });
-</script>
-<style>
-    a.post-title {
-        text-decoration: none;
-        color: #333;
-    }
-
-    a.post-title:hover {
-        color: #00CC99;
-    }
-</style>
-
+@section('category')
+    @include('posts.category')
+@endsection
 @section('content')
     @if(session('success'))
         <div id="success-alert" class="alert alert-success">
@@ -37,9 +21,10 @@
                                     <tr>
                                         <th>
                                             <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
-                                                <h2>{{$post->title}}</h2></a>
+                                                <h4>{{$post->title}}</h4></a>
                                             <div class="form-group">
-                                                <img src="{{ asset($post->image_path) }}" class="img-thumbnail"
+                                                <img class="card-img-top" src="{{ asset($post->image_path) }}"
+                                                     class="img-thumbnail"
                                                      style="max-width: 200px;">
                                             </div>
                                             <div class="post-content">
@@ -80,7 +65,8 @@
                         <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
                             <h5>{{$post->title}}</h5></a>
                         <div class="form-group">
-                            <img src="{{ asset($post->image_path) }}" class="img-thumbnail" style="max-width: 200px;">
+                            <img src="{{ asset($post->image_path) }}" class="img-thumbnail"
+                                 style="max-width: 200px;">
                         </div>
                         <p>{{ $post->describe_short }}</p>
                     </div>
