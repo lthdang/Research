@@ -45,6 +45,30 @@ class PostController extends Controller
 
         return view('posts.by_category', compact('posts', 'category','categories'));
     }
+
+    /**
+     *
+     * search blog post
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
+     */
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $posts = Post::where('title', 'like', "%$keyword%")
+            ->orWhere('content', 'like', "%$keyword%")
+            ->paginate(10);
+        return view('posts.search_results', compact('posts', 'keyword'));
+    }
+
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        $author = User::find($post->user_id);
+        return view('posts.show', compact('post', 'author'));
+    }
+
     /**
      * list blog posts
      *
