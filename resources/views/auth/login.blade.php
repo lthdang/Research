@@ -1,5 +1,5 @@
 @extends('layouts.auth-master')
-
+@section('title','Blog-Login')
 @section('content')
     <form method="post" action="{{ route('login.perform') }}">
         @csrf

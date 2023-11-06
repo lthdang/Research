@@ -1,4 +1,5 @@
 @extends('layouts.app-update')
+@section('title','Blog-Edit-Profile')
 @section('content')
     <div class="container">
         <div class="bg-light p-5 rounded">

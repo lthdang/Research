@@ -1,4 +1,5 @@
 @extends('layouts.app-master')
+@section('title','Blog')
 @section('category')
     @include('posts.category')
 @endsection
@@ -8,9 +9,9 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="bg-light p-5 rounded">
+    <div class="bg-light p-2 rounded">
         @auth
-            <h1>Dashboard</h1>
+            <h3>Dashboard</h3>
             <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary" role="button">New Post</a>
             <div class="post">
                 <div class="card">

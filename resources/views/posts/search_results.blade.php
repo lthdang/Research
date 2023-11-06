@@ -1,4 +1,5 @@
 @extends('layouts.app-master')
+@section('title','Blog-Search')
 @section('category')
     @include('posts.category')
 @endsection
@@ -21,6 +22,9 @@
         @empty
             <p>No results found for "{{ $keyword }}"</p>
         @endforelse
+    </div>
+    <div class="pagination">
+        {{ $posts->links() }}
     </div>
 @endsection
 

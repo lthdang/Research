@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
@@ -29,14 +30,13 @@ class PostController extends Controller
 
         return view('posts.search_results', compact('posts', 'keyword','categories'));
     }
-
-
     public function show($id)
     {
         $categories = Category::all();
         $post = Post::findOrFail($id);
+        $comments = Comment::where('post_id', $post->id)->get();
         $author = User::find($post->user_id);
-        return view('posts.show', compact('post', 'author','categories'));
+        return view('posts.show', compact('post', 'author','categories','comments'));
     }
     public function getPostsByCategory($category)
     {
@@ -72,6 +72,7 @@ class PostController extends Controller
         $describeShort = $request->input('describe_short');
         $category_id = $request->input('category_id');
         $status = $request->input('status');
+
         $post = new Post;
         $post->title = $title;
         $post->content = $content;
@@ -87,7 +88,7 @@ class PostController extends Controller
             $post->image_path = 'images/' . $imageName;
         }
         $post->save();
-        return redirect()->route('home.index');
+        return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được khởi tạo thành công.');
     }
 
     /**
@@ -103,7 +104,7 @@ class PostController extends Controller
             $post->delete();
         }
         $posts = Post::all();
-        return redirect()->route('home.index');
+        return redirect()->route('home.index')->with('success', 'Bài viết của bạn đã được xoá.');
     }
 
     /**

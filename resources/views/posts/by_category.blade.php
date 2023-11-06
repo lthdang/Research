@@ -1,4 +1,5 @@
 @extends('layouts.app-master')
+@section('title','Blog')
 @section('category')
     @include('posts.category')
 @endsection
