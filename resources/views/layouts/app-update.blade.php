@@ -10,36 +10,18 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{!! url('assets/bootstrap/css/bootstrap.min.css') !!}" rel="stylesheet">
-    <link href="{!! url('assets/css/signin.css') !!}" rel="stylesheet">
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-
-
     <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link href="{!! url('assets/css/app.css') !!}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body class="text-center">
-
-<main class="form-signin">
-
+<body>
+@include('layouts.partials.navbar')
+<div class="container">
     @yield('content')
+</div>
 
-</main>
 
-
+<script src="{!! url('assets/bootstrap/js/bootstrap.bundle.min.js') !!}"></script>
 </body>
 </html>

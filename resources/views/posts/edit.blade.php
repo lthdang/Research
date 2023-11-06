@@ -1,8 +1,7 @@
-@extends('layouts.app-master')
-
-<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-
+@extends('layouts.app-update')
+@section('title','Blog-Edit-Post')
 @section('content')
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
     <div class="bg-light p-5 rounded">
         <h1>Edit Post</h1>
 

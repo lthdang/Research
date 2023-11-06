@@ -24,6 +24,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::fallback(function () {
         return view('errors.404');
     });
+    Route::get('/posts/{category}/category', 'PostController@getPostsByCategory')->name('posts.byCategory');
+
 
 
     Route::group(['middleware' => ['guest']], function() {
@@ -32,6 +34,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          */
         Route::get('/register', 'RegisterController@show')->name('register.show');
         Route::post('/register', 'RegisterController@register')->name('register.perform');
+        Route::post('/comments', 'CommentController@store')->name('comments.store');
 
         /**
          * Login Routes

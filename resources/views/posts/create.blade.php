@@ -1,5 +1,5 @@
-@extends('layouts.app-master')
-
+@extends('layouts.app-update')
+@section('title','Blog-Create-Post')
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 @section('content')
     <div class="bg-light p-5 rounded">
@@ -10,6 +10,7 @@
             {!! Form::label('title', 'Title') !!}
             {!! Form::text('title', null, ['class' => 'form-control']) !!}
         </div>
+
         <div class="form-group">
             {!! Form::label('content', 'Content') !!}
             {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
@@ -37,6 +38,7 @@
                 <option value="published">Published</option>
             </select>
         </div>
+
         <div id="editor">
             <p>This is some sample content.</p>
         </div>

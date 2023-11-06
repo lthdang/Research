@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
@@ -11,16 +13,37 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * list blog posts
      *
+     * search blog post
      *
-     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
      */
-    public function index()
+    public function search(Request $request)
     {
-        $user_id = auth()->user()->id;
-        $posts = Post::where('user_id', $user_id)->get();
-        return view('home.index',compact('posts'));
+        $categories = Category::all();
+        $keyword = $request->input('keyword');
+
+        $posts = Post::where(function($query) use ($keyword) {
+            $query->where('title', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+        })->paginate(5);
+
+        return view('posts.search_results', compact('posts', 'keyword','categories'));
+    }
+    public function show($id)
+    {
+        $categories = Category::all();
+        $post = Post::findOrFail($id);
+        $comments = Comment::where('post_id', $post->id)->get();
+        $author = User::find($post->user_id);
+        return view('posts.show', compact('post', 'author','categories','comments'));
+    }
+    public function getPostsByCategory($category)
+    {
+        $categories = Category::all();
+        $posts = Post::where('category_id', $category)->get();
+
+        return view('posts.by_category', compact('posts', 'category','categories'));
     }
 
     /**
@@ -72,7 +95,8 @@ class PostController extends Controller
         $content = $request->input('content');
         $describeShort = $request->input('describe_short');
         $category_id = $request->input('category_id');
-        $status =$request->input('status');
+        $status = $request->input('status');
+
         $post = new Post;
         $post->title = $title;
         $post->content = $content;
@@ -85,11 +109,12 @@ class PostController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
-            $post->image_path ='images/' . $imageName;
+            $post->image_path = 'images/' . $imageName;
         }
         $post->save();
-        return redirect()->route('home.index');
+        return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được khởi tạo thành công.');
     }
+
     /**
      * list blog posts
      *
@@ -103,8 +128,9 @@ class PostController extends Controller
             $post->delete();
         }
         $posts = Post::all();
-        return redirect()->route('home.index');
+        return redirect()->route('home.index')->with('success', 'Bài viết của bạn đã được xoá.');
     }
+
     /**
      * list blog posts
      *
@@ -117,6 +143,7 @@ class PostController extends Controller
         $categories = Category::all()->pluck('name', 'id');
         return view('posts.edit', compact('post', 'categories'));
     }
+
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
@@ -132,17 +159,14 @@ class PostController extends Controller
             $image->move(public_path('images'), $imageName);
 
             if ($post->image_path) {
-                $oldImagePath = public_path( $post->image_path);
+                $oldImagePath = public_path($post->image_path);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
             }
             $post->image_path = 'images/' . $imageName;
         }
-
-
         $post->save();
-
         return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được cập nhật.');
     }
 
