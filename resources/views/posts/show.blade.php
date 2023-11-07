@@ -6,7 +6,7 @@
 @section('content')
     <div class="container">
         <div class="bg-light p-5 rounded">
-            <h1>{{ $post->title }}</h1>
+            <h1 class="h1-title">{{ $post->title }}</h1>
             <p> Ngày đăng: {{ $post->created_at }}</p>
             <p> Tác giả: {{ $author->username }}</p>
             <div class="text-center">
