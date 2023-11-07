@@ -13,7 +13,6 @@
     <!-- Custom styles for this template -->
     <link href="{!! url('assets/css/app.css') !!}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="{!! url('css/custom.css') !!}" rel="stylesheet">
 
     <style>
         .bd-placeholder-img {
