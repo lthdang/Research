@@ -24,7 +24,6 @@ class PostController extends Controller
         $keyword = $request->input('keyword');
 
         if (auth()->check() && auth()->user()) {
-            // Người dùng đăng nhập và có quyền tìm kiếm bài viết của họ
             $user = auth()->user();
             $posts = Post::where(function ($query) use ($keyword, $user) {
                 $query->where('user_id', $user->id)
@@ -34,7 +33,6 @@ class PostController extends Controller
                     });
             })->paginate(5);
         } else {
-            // Khách hoặc người dùng không có quyền tìm kiếm bài viết của họ, tìm trong tất cả bài viết
             $posts = Post::where(function ($query) use ($keyword) {
                 $query->where('title', 'LIKE', '%' . $keyword . '%')
                     ->orWhere('content', 'LIKE', '%' . $keyword . '%');

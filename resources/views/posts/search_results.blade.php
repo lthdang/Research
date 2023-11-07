@@ -7,7 +7,7 @@
     <div class="bg-light p-5 rounded">
         <h1 class ="h1-title">Search Results for <b>"{{ $keyword }}"</b></h1>
 
-        @forelse($posts->sortByDesc('id') as $post)
+        @forelse($posts as $post)
             <div class="post">
                 <div class="card">
                     <div class="row">

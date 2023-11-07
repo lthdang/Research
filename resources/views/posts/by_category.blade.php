@@ -6,7 +6,7 @@
 @section('content')
     <h1>Posts</h1>
     @if ($posts->count() > 0)
-        @foreach($posts->sortByDesc('id') as $post)
+        @foreach($posts as $post)
             <div class="post">
                 <div class="card">
                     <div class="row">
