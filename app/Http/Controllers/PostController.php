@@ -23,35 +23,55 @@ class PostController extends Controller
         $categories = Category::all();
         $keyword = $request->input('keyword');
 
-        $posts = Post::where(function($query) use ($keyword) {
-            $query->where('title', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('content', 'LIKE', '%' . $keyword . '%');
-        })->paginate(5);
+        if (auth()->check() && auth()->user()) {
+            $user = auth()->user();
+            $posts = Post::where(function ($query) use ($keyword, $user) {
+                $query->where('user_id', $user->id)
+                    ->where(function ($query) use ($keyword) {
+                        $query->where('title', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+                    });
+            })->paginate(5);
+        } else {
+            $posts = Post::where(function ($query) use ($keyword) {
+                $query->where('title', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+            })->paginate(5);
+        }
 
-        return view('posts.search_results', compact('posts', 'keyword','categories'));
+        return view('posts.search_results', compact('posts', 'keyword', 'categories'));
     }
+
+
     public function show($id)
     {
         $categories = Category::all();
         $post = Post::findOrFail($id);
         $comments = Comment::where('post_id', $post->id)->get();
         $author = User::find($post->user_id);
-        return view('posts.show', compact('post', 'author','categories','comments'));
-    }
-    public function getPostsByCategory($category)
-    {
-        $categories = Category::all();
-        $posts = Post::where('category_id', $category)->get();
-
-        return view('posts.by_category', compact('posts', 'category','categories'));
+        return view('posts.show', compact('post', 'author', 'categories', 'comments'));
     }
 
     /**
      *
-     * search blog post
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
+     *
+     *
      */
+    public function getPostsByCategory($category)
+    {
+        $categories = Category::all();
+
+
+        if (auth()->check() && auth()->user()) {
+            $user = auth()->user();
+            $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
+        } else {
+            $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
+        }
+
+        return view('posts.by_category', compact('posts', 'category', 'categories'));
+    }
 
     /**
      * list blog posts
@@ -63,7 +83,6 @@ class PostController extends Controller
     {
         $categories = Category::all()->pluck('name', 'id');
         $post = new Post;
-
         return view('posts.create', compact('post', 'categories'));
     }
 
@@ -75,27 +94,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $title = $request->input('title');
-        $content = $request->input('content');
-        $describeShort = $request->input('describe_short');
-        $category_id = $request->input('category_id');
-        $status = $request->input('status');
-
-        $post = new Post;
-        $post->title = $title;
-        $post->content = $content;
-        $post->describe_short = $describeShort;
-        $post->category_id = $category_id;
-        $post->user_id = auth()->user()->id;
-        $post->status = $status;
-
+        $input = $request->all();
+        unset($input['_token']);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
-            $post->image_path = 'images/' . $imageName;
+            $input['image_path'] = 'images/' . $imageName;
         }
-        $post->save();
+        $input['user_id'] = auth()->user()->id;
+        try {
+            Post::create($input);
+        } catch (\ErrorException $exception) {
+            dd($exception);
+        }
         return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được khởi tạo thành công.');
     }
 
@@ -109,11 +121,17 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         if ($post) {
+            if ($post->image_path) {
+                $oldImagePath = public_path($post->image_path);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
             $post->delete();
         }
-        $posts = Post::all();
         return redirect()->route('home.index')->with('success', 'Bài viết của bạn đã được xoá.');
     }
+
 
     /**
      * list blog posts

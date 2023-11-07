@@ -9,7 +9,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="bg-light p-2 rounded">
+    <div class="bg-light p-2 rounded ">
         @auth
             <h3>Dashboard</h3>
             <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary" role="button">New Post</a>
@@ -18,41 +18,36 @@
                     @foreach($posts->sortByDesc('id') as $post)
                         <div class="post">
                             <div class="card">
-                                <table>
-                                    <tr>
-                                        <th>
-                                            <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
-                                                <h4>{{$post->title}}</h4></a>
-                                            <div class="form-group">
-                                                <img class="card-img-top" src="{{ asset($post->image_path) }}"
-                                                     class="img-thumbnail"
-                                                     style="max-width: 200px;">
-                                            </div>
-                                            <div class="post-content">
-                                                {!! $post->describe_short !!}
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <form action="{{ route('posts.edit', ['id' => $post->id]) }}"
-                                                  style="display: inline;">
-                                                <button type="submit" class="btn btn-lg btn-primary" role="button">
-                                                    Update
-                                                </button>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
+                                            @if ($post->image_path)
+                                                <img src="{{ asset($post->image_path) }}" class="img-thumbnail img-fixed-size" alt="Post Image" style="max-width: 200px;">
+                                            @else
+                                                <img src="{{ asset('path-to-default-image.jpg') }}" class="img-thumbnail" alt="Default Image" style="max-width: 200px;">
+                                            @endif
+                                        </a>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h4><a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">{{$post->title}}</a></h4>
+                                        <div class="post-content">
+                                            {!! $post->describe_short !!}
+                                        </div>
+                                        <div class="button-group">
+                                            <form action="{{ route('posts.edit', ['id' => $post->id]) }}" style="display: inline;">
+                                                <button type="submit" class="btn btn-primary" role="button">Update</button>
                                             </form>
-
-                                            <form action="{{ route('posts.delete', ['id' => $post->id]) }}"
-                                                  method="POST" style="display: inline;">
+                                            <form action="{{ route('posts.delete', ['id' => $post->id]) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-lg btn-danger" role="button">
-                                                    Delete
-                                                </button>
+                                                <button type="submit" class="btn btn-danger" role="button">Delete</button>
                                             </form>
-                                        </th>
-                                    </tr>
-                                </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     @endforeach
                 </div>
             </div>
@@ -61,17 +56,27 @@
         @guest
             <h1>Posts</h1>
             @foreach($posts->sortByDesc('created_at') as $post)
-                <div class="post">
-                    <div class="card">
-                        <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
-                            <h5>{{$post->title}}</h5></a>
-                        <div class="form-group">
-                            <img src="{{ asset($post->image_path) }}" class="img-thumbnail"
-                                 style="max-width: 200px;">
+                    <div class="post">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">
+                                        @if ($post->image_path)
+                                            <img src="{{ asset($post->image_path) }}" class="img-thumbnail" alt="Post Image" >
+                                        @else
+                                            <img src="{{ asset('path-to-default-image.jpg') }}" class="img-thumbnail" alt="Default Image" style="max-width: 200px;">
+                                        @endif
+                                    </a>
+                                </div>
+                                <div class="col-md-9">
+                                    <h4><a href="{{ route('posts.show', ['id' => $post->id]) }}" class="post-title">{{$post->title}}</a></h4>
+                                    <div class="post-content">
+                                        {!! $post->describe_short !!}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p>{{ $post->describe_short }}</p>
                     </div>
-                </div>
             @endforeach
         @endguest
     </div>
