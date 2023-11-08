@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Category;
@@ -12,163 +13,243 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
     /**
      *
-     * search blog post
+     * search blog post with keyword
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
      */
     public function search(Request $request)
     {
-        $categories = Category::all();
-        $keyword = $request->input('keyword');
-
-        if (auth()->check() && auth()->user()) {
-            $user = auth()->user();
-            $posts = Post::where(function ($query) use ($keyword, $user) {
-                $query->where('user_id', $user->id)
-                    ->where(function ($query) use ($keyword) {
-                        $query->where('title', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('content', 'LIKE', '%' . $keyword . '%');
-                    });
-            })->paginate(5);
-        } else {
-            $posts = Post::where(function ($query) use ($keyword) {
-                $query->where('title', 'LIKE', '%' . $keyword . '%')
-                    ->orWhere('content', 'LIKE', '%' . $keyword . '%');
-            })->paginate(5);
+        try {
+            $categories = Category::all();
+            $keyword = $request->input('keyword');
+            if (auth()->check() && auth()->user()) {
+                $user = auth()->user();
+                $posts = Post::where(function ($query) use ($keyword, $user) {
+                    $query->where('user_id', $user->id)
+                        ->where(function ($query) use ($keyword) {
+                            $query->where('title', 'LIKE', '%' . $keyword . '%')
+                                ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+                        });
+                })->paginate(5);
+            } else {
+                $posts = Post::where(function ($query) use ($keyword) {
+                    $query->where('title', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+                })->paginate(5);
+            }
+        } catch (\Exception $e) {
+            return view('errors.404');
         }
-
         return view('posts.search_results', compact('posts', 'keyword', 'categories'));
     }
 
-
+    /**
+     * return view with all posts and categories
+     *
+     * @param $id
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function show($id)
     {
-        $categories = Category::all();
-        $post = Post::findOrFail($id);
-        $comments = Comment::where('post_id', $post->id)->get();
-        $author = User::find($post->user_id);
+        try {
+            $categories = Category::all();
+            $post = Post::findOrFail($id);
+            $comments = Comment::where('post_id', $post->id)->get();
+            $author = User::find($post->user_id);
+        } catch (\Exception $e) {
+            return view('errors.404');
+        }
         return view('posts.show', compact('post', 'author', 'categories', 'comments'));
     }
 
     /**
+     *  review post
+     * @param $id
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function review($id)
+    {
+        try {
+            $categories = Category::all();
+            $post = Post::findOrFail($id);
+            $comments = Comment::where('post_id', $post->id)->get();
+            $author = auth()->user();
+        } catch (\Exception $e) {
+            return view('errors.404');
+        }
+        return view('posts.review', compact('post', 'author', 'categories', 'comments'));
+    }
+
+    /**
+     * Classify articles based on category for homepage
      *
-     *
-     *
-     *
+     * @param $category
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function getPostsByCategory($category)
     {
-        $categories = Category::all();
+        try {
+            $categories = Category::all();
 
+            if (auth()->check() && auth()->user()) {
+                $user = auth()->user();
+                $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
 
-        if (auth()->check() && auth()->user()) {
-            $user = auth()->user();
-            $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
-        } else {
-            $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
+            } else {
+                $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
+
+            }
+        } catch (\Exception $e) {
+            return view('errors.404');
         }
+        return view('home.post', compact('posts', 'category', 'categories'));
+    }
 
+    /**
+     * Classify articles based on category for admin page
+     *
+     * @param $category
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function getPostsByCategoryAdmin($category)
+    {
+        try {
+            $categories = Category::all();
+            if (auth()->check() && auth()->user()) {
+                $user = auth()->user();
+                $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
+            }
+        } catch (\Exception $e) {
+            return view('errors.404');
+        }
         return view('home.index', compact('posts', 'category', 'categories'));
     }
 
     /**
-     * list blog posts
-     *
+     *  create the article with the article's information
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function create()
     {
-        $categories = Category::all()->pluck('name', 'id');
-        $post = new Post;
+        try {
+            $categories = Category::all()->pluck('name', 'id');
+            $post = new Post;
+        } catch (\Exception $e) {
+            return view('errors.404');
+        }
         return view('posts.create', compact('post', 'categories'));
     }
 
     /**
-     * list blog posts
+     * Store article information into the database
      *
-     *
-     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @param PostRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $input = $request->all();
-        unset($input['_token']);
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $input['image_path'] = 'images/' . $imageName;
-        }
-        $input['user_id'] = auth()->user()->id;
         try {
-            Post::create($input);
-        } catch (\ErrorException $exception) {
-            dd($exception);
+            $input = $request->all();
+            unset($input['_token']);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+                $input['image_path'] = 'images/' . $imageName;
+            }
+            $input['user_id'] = auth()->user()->id;
+            try {
+                Post::create($input);
+            } catch (\ErrorException $exception) {
+                dd($exception);
+            }
+        } catch (\Exception $e) {
+            return view('errors.404');
         }
         return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được khởi tạo thành công.');
     }
 
     /**
-     * list blog posts
-     *
-     *
-     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * delete posts with selected id
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function delete($id)
     {
-        $post = Post::find($id);
-        if ($post) {
-            if ($post->image_path) {
-                $oldImagePath = public_path($post->image_path);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
+        try {
+            $post = Post::find($id);
+            if ($post) {
+                if ($post->image_path) {
+                    $oldImagePath = public_path($post->image_path);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
                 }
+                $post->delete();
             }
-            $post->delete();
+        } catch (\Exception $e) {
+            return view('errors.404');
         }
         return redirect()->route('home.index')->with('success', 'Bài viết của bạn đã được xoá.');
     }
 
 
     /**
-     * list blog posts
+     * Find post by id to make post edits
      *
      *
      * @return  \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|Factory|Application
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
-        $categories = Category::all()->pluck('name', 'id');
+        try {
+            $post = Post::findOrFail($id);
+            $categories = Category::all()->pluck('name', 'id');
+        } catch (\Exception $e) {
+            return view('errors.404');
+        }
+
         return view('posts.edit', compact('post', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Edit post information and save
+     *
+     * @param PostRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(PostRequest $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
-        $post->describe_short = $request->input('describe_short');
-        $post->category_id = $request->input('category_id');
-        $post->status = $request->input('status');
+        try {
+            $post = Post::findOrFail($id);
+            $post->title = $request->input('title');
+            $post->content = $request->input('content');
+            $post->describe_short = $request->input('describe_short');
+            $post->category_id = $request->input('category_id');
+            $post->status = $request->input('status');
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
 
-            if ($post->image_path) {
-                $oldImagePath = public_path($post->image_path);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
+                if ($post->image_path) {
+                    $oldImagePath = public_path($post->image_path);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
                 }
+                $post->image_path = 'images/' . $imageName;
             }
-            $post->image_path = 'images/' . $imageName;
+            $post->save();
+        } catch (\Exception $e) {
+            return view('errors.404');
         }
-        $post->save();
         return redirect()->route('home.index')->with('success', 'Thông tin bài viết của bạn đã được cập nhật.');
     }
 

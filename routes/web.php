@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\ValidateToken;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,24 +15,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'App\Http\Controllers'], function()
-{
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
     /**
      * Home Routes
      */
-    Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/admin', 'HomeController@index')->name('home.index');
+    Route::get('/', 'HomeController@post')->name('home.post');
+
+    /**
+     *  review articles
+     */
     Route::get('/posts/detail/{id}', 'PostController@show')->name('posts.show');
+    Route::get('/posts/review/{id}', 'PostController@review')->name('posts.review');
+//    ->middleware('validateToken')
     Route::get('/posts/search', 'PostController@search')->name('posts.search');
+
 
     Route::fallback(function () {
         return view('errors.404');
     });
 
-    Route::get('/posts/category/{category}', 'PostController@getPostsByCategory')->name('posts.byCategory');
+    Route::get('/category/{category}', 'PostController@getPostsByCategory')->name('posts.byCategory');
+    Route::get('/category_admin/{category}', 'PostController@getPostsByCategoryAdmin')->name('posts.byCategoryAdmin');
 
 
+    Route::group(['middleware' => ['guest']], function () {
 
-    Route::group(['middleware' => ['guest']], function() {
         /**
          * Register Routes
          */
@@ -47,10 +57,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          */
         Route::get('/login', 'LoginController@show')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
-
     });
 
-    Route::group(['middleware' => ['auth']], function() {
+    Route::group(['middleware' => ['auth']], function () {
+
         /**
          * Logout Routes
          */
@@ -79,6 +89,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          */
         Route::get('/profile/edit', 'ProfileController@edit')->name('profile.edit');
         Route::put('/profile/update', 'ProfileController@update')->name('profile.update');
+
+        /**
+         * profile information
+         */
+        Route::get('/profile/info', 'ProfileController@info')->name('profile.info');
 
     });
 });

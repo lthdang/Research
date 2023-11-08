@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +60,8 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return redirect()->intended();
+        $categories = Category::all();
+        $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
+        return view('home.post', compact('posts','categories'));
     }
 }
