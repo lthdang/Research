@@ -22,7 +22,7 @@ a.post-title:hover {
 }
 
 body {
-    background: white;
+    background: #F0FFF0;
 }
 
 .list-group {
@@ -59,5 +59,9 @@ body {
 
 .bold{
     font-weight: bold;
+}
+
+.honey-color{
+    background-color: #F0FFF0;
 }
 

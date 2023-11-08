@@ -16,7 +16,7 @@
                                 @if ($post->image_path)
                                     <img src="{{ asset($post->image_path) }}" class="img-thumbnail img-fixed-size" alt="Post Image" style="max-width: 200px;">
                                 @else
-                                    <img src="{{ asset('path-to-default-image.jpg') }}" class="img-thumbnail" alt="Default Image" style="max-width: 200px;">
+                                    <img src="{{ asset('images/default_image.jpg') }}" class="img-thumbnail img-fixed-size" alt="Default Image" style="max-width: 200px;">
                                 @endif
                             </a>
                         </div>
