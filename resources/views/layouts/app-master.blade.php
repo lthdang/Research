@@ -27,7 +27,7 @@
 </head>
 <body>
 @include('layouts.partials.navbar')
-<div class="container">
+<div class="container ">
     <div class="row">
         <div class="col-lg-2">
             @yield('category')
@@ -41,6 +41,8 @@
         </div>
     </div>
 </div>
+@include('layouts.partials.footer')
 <script src="{!! url('assets/bootstrap/js/bootstrap.bundle.min.js') !!}"></script>
+
 </body>
 </html>

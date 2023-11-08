@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="col-12">
-                    {!! Form::submit('Update Profile', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::submit('Update Profile', ['class' => 'btn btn-primary fa fa-pencil-square']) !!}
                 </div>
             {!! Form::close() !!}
 

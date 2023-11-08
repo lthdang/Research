@@ -70,7 +70,7 @@ class PostController extends Controller
             $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
         }
 
-        return view('posts.by_category', compact('posts', 'category', 'categories'));
+        return view('home.index', compact('posts', 'category', 'categories'));
     }
 
     /**

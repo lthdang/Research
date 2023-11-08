@@ -42,7 +42,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Update Post', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Update Post', ['class' => 'btn btn-primary fa fa-pencil-square']) !!}
         </div>
 
         {!! Form::close() !!}
