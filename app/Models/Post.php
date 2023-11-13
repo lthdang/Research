@@ -14,7 +14,7 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-        protected $fillable = [
+    protected $fillable = [
         'title',
         'describe_short',
         'created_at',

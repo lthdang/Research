@@ -92,13 +92,14 @@
                         </div>
                         <div class="dropdown-divider "></div>
                         <a class="dropdown-item " href="{{ route('profile.info') }}">
-                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate" title="Profile &amp; account">Profile &amp; account</span>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"
+                                  title="Profile &amp; account">Profile &amp; account</span>
                         </a>
                         <a class="dropdown-item" href="{{ route('profile.edit') }}">
                             <span class="text-truncate pr-2"
                                   title="Profile &amp; account">Update account information</span>
                         </a>
-                        <a class="dropdown-item"  href="{{ route('home.index') }}">
+                        <a class="dropdown-item" href="{{ route('home.index') }}">
                             <span class="text-truncate pr-2" title="Settings">Manager post</span>
                         </a>
                         <a class="dropdown-item" href="#">

@@ -20,11 +20,11 @@ class HomeController extends Controller
         $categories = Category::all();
         if (auth()->check()) {
             $user_id = auth()->user()->id;
-            $posts = Post::where('user_id', $user_id) -> orderBy('id', 'desc') -> paginate(4);
+            $posts = Post::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(4);
         } else {
-            $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
+            $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(4);
         }
-        return view('home.index', compact('posts','categories'));
+        return view('home.index', compact('posts', 'categories'));
     }
 
     /**
@@ -35,8 +35,8 @@ class HomeController extends Controller
     public function post()
     {
         $categories = Category::all();
-        $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
-        return view('home.post', compact('posts','categories'));
+        $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(4);
+        return view('home.post', compact('posts', 'categories'));
     }
 
 
