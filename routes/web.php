@@ -47,10 +47,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/register', 'RegisterController@show')->name('register.show');
         Route::post('/register', 'RegisterController@register')->name('register.perform');
 
-        /**
-         * Comment Router
-         */
-        Route::post('/comments', 'CommentController@store')->name('comments.store');
 
         /**
          * Login Routes
@@ -94,6 +90,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          * profile information
          */
         Route::get('/profile/info', 'ProfileController@info')->name('profile.info');
+
+        /**
+         * Comment Router
+         */
+        Route::post('/comments', 'CommentController@store')->name('comments.store');
 
     });
 });

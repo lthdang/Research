@@ -22,7 +22,9 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         $user = auth()->user();
-
+        if (!$user) {
+            return redirect()->back()->with('error', 'User authentication failed.');
+        }
         return [
             'user_name'=>'required|max:255',
             'full_name'=>'required|max:50',
