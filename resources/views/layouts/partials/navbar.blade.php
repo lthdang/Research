@@ -53,8 +53,13 @@
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="{{ route('posts.search') }}">
                 @csrf
                 <div class="input-group">
-                    <input type="search" name="keyword" class="form-control form-control-line" placeholder="Search..."
-                           aria-label="Search">
+                    <form class="d-flex">
+                        <input type="search" name="keyword" class="form-control form-control-line"
+                               placeholder="Search..."
+                               aria-label="Search">
+                        <button class="btn btn-outline-success border" type="submit"><i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
             </form>
             @auth
