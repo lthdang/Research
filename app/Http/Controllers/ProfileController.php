@@ -60,7 +60,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             return view('errors.404');
         }
-        return redirect()->route('home.index')->with('success', 'Thông tin của bạn đã được cập nhật.');
+        return redirect()->route('profile.info')->with('success', 'Thông tin của bạn đã được cập nhật.');
     }
 
 
