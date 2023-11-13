@@ -18,26 +18,32 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         try {
+            $user = auth()->user();
+            if (!$user) {
+                return redirect()->back()->with('error', 'User authentication failed.');
+            }
             $request->validate([
+                'post_id' => 'required|exists:posts,id',
                 'content' => 'required',
             ]);
-
             $post_id = $request->input('post_id');
             $content = $request->input('content');
-            $name = $request->input('name');
-            $email = $request->input('email');
-
+            $post = Post::find($post_id);
+            if (!$post) {
+                return redirect()->back()->with('error', 'Post not found.');
+            }
             $comment = new Comment();
             $comment->post_id = $post_id;
             $comment->content = $content;
-            $comment->name = $name;
-            $comment->email = $email;
+            $comment->name = $user->username;
+            $comment->email = $user->email;
             $comment->save();
-
             return redirect()->back()->with('success', 'Comment added successfully.');
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Database error occurred.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An unexpected error occurred.');
         }
-    }
 
+    }
 }

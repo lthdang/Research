@@ -55,6 +55,7 @@ class PostController extends Controller
     public function show($id)
     {
         try {
+            $user = auth()->user();
             $categories = Category::all();
             $post = Post::findOrFail($id);
             $comments = Comment::where('post_id', $post->id)->get();
@@ -62,7 +63,7 @@ class PostController extends Controller
         } catch (\Exception $e) {
             return view('errors.404');
         }
-        return view('posts.show', compact('post', 'author', 'categories', 'comments'));
+        return view('posts.show', compact('post', 'author', 'user', 'categories', 'comments'));
     }
 
     /**
@@ -93,15 +94,7 @@ class PostController extends Controller
     {
         try {
             $categories = Category::all();
-
-            if (auth()->check() && auth()->user()) {
-                $user = auth()->user();
-                $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
-
-            } else {
-                $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
-
-            }
+            $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
         } catch (\Exception $e) {
             return view('errors.404');
         }
