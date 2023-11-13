@@ -11,7 +11,8 @@
     @endif
     <div class="bg-light p-2 rounded">
         @auth
-            <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary fa fa-plus-circle" role="button"> New Post</a>
+            <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary fa fa-plus-circle" role="button"> New
+                Post</a>
             <div class="post">
                 <div class="card">
                     @foreach($posts->sortByDesc('id') as $post)
@@ -40,7 +41,8 @@
                                             <form action="{{ route('posts.edit', ['id' => $post->id]) }}"
                                                   style="display: inline;">
 
-                                                <button type="submit" class="btn btn-primary fa fa-pencil-square" role="button">Update
+                                                <button type="submit" class="btn btn-primary fa fa-pencil-square"
+                                                        role="button">Update
                                                 </button>
                                             </form>
                                             <form action="{{ route('posts.delete', ['id' => $post->id]) }}"

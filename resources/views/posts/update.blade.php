@@ -60,7 +60,7 @@
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 ClassicEditor
                     .create(document.querySelector('#content-editor'))
                     .catch(error => {

@@ -34,7 +34,7 @@ class LoginController extends Controller
     {
         $credentials = $request->getCredentials();
 
-        if(!Auth::validate($credentials)):
+        if (!Auth::validate($credentials)):
             return redirect()->to('login')
                 ->withErrors(trans('auth.failed'));
         endif;
@@ -43,7 +43,7 @@ class LoginController extends Controller
 
         Auth::login($user, $request->get('remember'));
 
-        if($request->get('remember')):
+        if ($request->get('remember')):
             $this->setRememberMeExpiration($user);
         endif;
 
@@ -61,7 +61,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $categories = Category::all();
-        $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
-        return view('home.post', compact('posts','categories'));
+        $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(4);
+        return view('home.post', compact('posts', 'categories'));
     }
 }

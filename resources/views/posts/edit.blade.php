@@ -22,60 +22,60 @@
         <h1 class="h1-title">Edit Post</h1>
 
         {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) !!}
-            <div class="form-group">
-                {!! Form::label('title', 'Title') !!}
-                {!! Form::text('title', null, ['class' => 'form-control']) !!}
-                @if($errors->has('title'))
-                    <div class="alert alert-danger">{{ $errors->first('title') }}</div>
-                @endif
-            </div>
+        <div class="form-group">
+            {!! Form::label('title', 'Title') !!}
+            {!! Form::text('title', null, ['class' => 'form-control']) !!}
+            @if($errors->has('title'))
+                <div class="alert alert-danger">{{ $errors->first('title') }}</div>
+            @endif
+        </div>
 
-            <div class="form-group">
-                {!! Form::label('content', 'Content') !!}
-                {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
-                @if($errors->has('content'))
-                    <div class="alert alert-danger">{{ $errors->first('content') }}</div>
-                @endif
-            </div>
+        <div class="form-group">
+            {!! Form::label('content', 'Content') !!}
+            {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
+            @if($errors->has('content'))
+                <div class="alert alert-danger">{{ $errors->first('content') }}</div>
+            @endif
+        </div>
 
-            <div class="col-md-12">
-                {!! Form::label('image', 'Image') !!}
-                {!! Form::file('image', ['class' => 'form-control', 'onchange' => 'displayImage(this)']) !!}
-                <img id="image-preview" src="{{ $post->image_path ? asset($post->image_path) : '#' }}"
-                     alt="Image Preview"
-                     class="img-thumbnail" style="max-width: 100px;">
-                @if($errors->has('image'))
-                    <div class="alert alert-danger">{{ $errors->first('image') }}</div>
-                @endif
-            </div>
+        <div class="col-md-12">
+            {!! Form::label('image', 'Image') !!}
+            {!! Form::file('image', ['class' => 'form-control', 'onchange' => 'displayImage(this)']) !!}
+            <img id="image-preview" src="{{ $post->image_path ? asset($post->image_path) : '#' }}"
+                 alt="Image Preview"
+                 class="img-thumbnail" style="max-width: 100px;">
+            @if($errors->has('image'))
+                <div class="alert alert-danger">{{ $errors->first('image') }}</div>
+            @endif
+        </div>
 
-            <div class="form-group">
-                {!! Form::label('describe_short', 'Short Description') !!}
-                {!! Form::text('describe_short', null, ['class' => 'form-control']) !!}
-                @if($errors->has('describe_short'))
-                    <div class="alert alert-danger">{{ $errors->first('describe_short') }}</div>
-                @endif
-            </div>
+        <div class="form-group">
+            {!! Form::label('describe_short', 'Short Description') !!}
+            {!! Form::text('describe_short', null, ['class' => 'form-control']) !!}
+            @if($errors->has('describe_short'))
+                <div class="alert alert-danger">{{ $errors->first('describe_short') }}</div>
+            @endif
+        </div>
 
-            <div class="form-group">
-                {!! Form::label('category_id', 'Category') !!}
-                {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
-            </div>
+        <div class="form-group">
+            {!! Form::label('category_id', 'Category') !!}
+            {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
+        </div>
 
-            <div class="form-group">
-                {!! Form::label('status', 'Status') !!}
-                <select name="status" class="form-control">
-                    <option value="draft" @if($post->status == 'draft') selected @endif>Draft</option>
-                    <option value="published" @if($post->status == 'published') selected @endif>Published</option>
-                </select>
-            </div>
+        <div class="form-group">
+            {!! Form::label('status', 'Status') !!}
+            <select name="status" class="form-control">
+                <option value="draft" @if($post->status == 'draft') selected @endif>Draft</option>
+                <option value="published" @if($post->status == 'published') selected @endif>Published</option>
+            </select>
+        </div>
 
-            <div class="form-group">
-                {!! Form::submit('Update Post', ['class' => 'btn btn-primary fa fa-pencil-square']) !!}
-            </div>
+        <div class="form-group">
+            {!! Form::submit('Update Post', ['class' => 'btn btn-primary fa fa-pencil-square']) !!}
+        </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 ClassicEditor
                     .create(document.querySelector('#content-editor'))
                     .catch(error => {

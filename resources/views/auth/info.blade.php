@@ -5,7 +5,7 @@
         <article class="carousel slide my-4 ">
             <div class="row">
                 <div class="col-6">
-                    <p class ="text-center"> Thông tin người dùng</p>
+                    <p class="text-center"> Thông tin người dùng</p>
                     <div class="row">
                         <div class="col-5">
                             <p> Full Name: {{ $user->full_name }}</p>
