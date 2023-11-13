@@ -19,25 +19,9 @@
             <div class="post-content">
                 {!! $post->content !!}
             </div>
-            @auth()
-                <form action="{{ route('posts.edit', ['id' => $post->id]) }}"
-                      style="display: inline;">
-                    <button type="submit" class="btn btn-lg btn-primary fa fa-pencil-square" role="button">
-                        Update
-                    </button>
-                </form>
-                <form action="{{ route('posts.delete', ['id' => $post->id]) }}"
-                      method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-lg btn-danger fa fa-trash" role="button">
-                        Delete
-                    </button>
-                </form>
-            @endauth
         </div>
     </div>
-    @guest()
+    @auth()
         <h5> Comment</h5>
         <div class="bg-light p-1 rounded">
             @forelse($comments as $comment)
@@ -67,6 +51,6 @@
             <button type="submit" class="btn btn-primary">Submit Comment</button>
         </form>
 
-    @endguest
+    @endauth
 
 @endsection

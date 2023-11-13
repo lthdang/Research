@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Contracts\Foundation\Application;
@@ -8,9 +9,9 @@ use Illuminate\Contracts\View\Factory;
 
 class HomeController extends Controller
 {
+
     /**
-     * list blog posts
-     *
+     * find all post and categories for admin page
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
@@ -24,6 +25,18 @@ class HomeController extends Controller
             $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
         }
         return view('home.index', compact('posts','categories'));
+    }
+
+    /**
+     * find all post and categories for homepage
+     *
+     * @return Application|Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    public function post()
+    {
+        $categories = Category::all();
+        $posts = Post::where('status', 'published') ->orderBy('id', 'desc') -> paginate(4);
+        return view('home.post', compact('posts','categories'));
     }
 
 

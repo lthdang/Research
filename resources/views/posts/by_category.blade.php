@@ -4,7 +4,6 @@
     @include('posts.category')
 @endsection
 @section('content')
-    <h1>Posts</h1>
     @if ($posts->count() > 0)
         @foreach($posts as $post)
             <div class="post">
