@@ -40,16 +40,16 @@
                                         <div class="button-group">
                                             <form action="{{ route('posts.edit', ['id' => $post->id]) }}"
                                                   style="display: inline;">
-                                                <button type="submit" class="btn btn-primary fa fa-pencil-square"
-                                                        role="button"> Update
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fas fa-edit"></i>
                                                 </button>
                                             </form>
                                             <form action="{{ route('posts.delete', ['id' => $post->id]) }}"
                                                   method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger fa fa-trash" role="button">
-                                                    Delete
+                                                <button type="submit" class="btn btn-outline-danger" role="button">
+                                                    <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
