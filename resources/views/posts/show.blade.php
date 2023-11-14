@@ -6,9 +6,15 @@
 @section('content')
     <div class="container">
         <div class="bg-light p-5 rounded">
-            <h1 class="h1-title">{{ $post->title }}</h1>
-            <p> Ngày đăng: {{ $post->created_at }}</p>
-            <p> Tác giả: {{ $author->username }}</p>
+            <form action="{{ route('home.post', ['id' => $post->id]) }}"
+                  style="display: inline;">
+                <button type="submit" class="btn btn-outline-primary">
+                    Back  <i class="fas fa-backward"></i>
+                </button>
+            </form>
+            <h1 class="h1-title text-center">{{ $post->title }}</h1>
+            <p> <b>Ngày đăng:</b> {{ $post->created_at }}</p>
+            <p> <b>Tác giả:</b> {{ $author->username }}</p>
             <div class="text-center">
                 @if ($post->image_path)
                     <img src="{{ asset($post->image_path) }}" class="img-thumbnail" alt="Post Image">
@@ -27,8 +33,14 @@
             <div class="bg-light p-3 rounded">
                 @forelse($comments as $comment)
                     <div class="comment mb-3">
-                        <img src="{{ $user->avatar ? asset($user->avatar) : '#' }}"
-                             class=" avatar img-thumbnail" style="width: 30px; height: 30px;">
+                        @if ($comment->avatar)
+                            <img src="{{ asset($comment->avatar) }}" class="img-thumbnail"
+                                 style="width: 30px; height: 30px;" alt="Post Image">
+                        @else
+                            <img src="{{ asset('images/default_image.jpg') }}" class="img-thumbnail "
+                                 style="width: 30px; height: 30px;"
+                                 alt="Default Image">
+                        @endif
                         <strong>{{ $comment->name }}: {{ $comment->content }}</strong>
 
                     </div>
