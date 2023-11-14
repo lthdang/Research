@@ -7,11 +7,9 @@
             var preview = document.getElementById('image-preview');
             var file = input.files[0];
             var reader = new FileReader();
-
             reader.onload = function (e) {
                 preview.src = e.target.result;
             };
-
             if (file) {
                 reader.readAsDataURL(file);
             }
@@ -41,9 +39,15 @@
         <div class="col-md-12">
             {!! Form::label('image', 'Image') !!}
             {!! Form::file('image', ['class' => 'form-control', 'onchange' => 'displayImage(this)']) !!}
-            <img id="image-preview" src="{{ $post->image_path ? asset($post->image_path) : '#' }}"
-                 alt="Image Preview"
-                 class="img-thumbnail" style="max-width: 100px;">
+            @if ($post->image_path)
+                <img id="image-preview" src="{{ $post->image_path ? asset($post->image_path) : '#' }}"
+                     alt="Image Preview"
+                     class="img-thumbnail" style="max-width: 100px;">
+            @else
+                <img id="image-preview" src="{{ asset('images/default_image.jpg') }}"
+                     alt="Default Image"
+                     class="img-thumbnail" style="max-width: 100px;">
+            @endif
             @if($errors->has('image'))
                 <div class="alert alert-danger">{{ $errors->first('image') }}</div>
             @endif

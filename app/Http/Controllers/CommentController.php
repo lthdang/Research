@@ -37,6 +37,7 @@ class CommentController extends Controller
             $comment->content = $content;
             $comment->name = $user->username;
             $comment->email = $user->email;
+            $comment->avatar = $user->avatar;
             $comment->save();
             return redirect()->back()->with('success', 'Comment added successfully.');
         } catch (QueryException $e) {

@@ -1,4 +1,4 @@
-<h2 class="font-cursive">Category</h2>
+<h2 class="font-cursive">Category </h2>
 <div class="list-group">
     @foreach($categories as $category)
         <a href="{{ route('posts.byCategory', ['category' => $category->id]) }}"

@@ -11,7 +11,7 @@
     @endif
     <div class="bg-light p-2 rounded">
         @auth
-            <a href="{{ route('posts.create') }}" class="btn btn-lg btn-primary fa fa-plus-circle" role="button">
+            <a href="{{ route('posts.create') }}" class="btn btn-lg btn-outline-primary fa fa-plus-circle" role="button">
                 New Post</a>
             <div class="post">
                 <div class="card">
