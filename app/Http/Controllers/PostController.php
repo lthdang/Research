@@ -58,7 +58,11 @@ class PostController extends Controller
             $user = auth()->user();
             $categories = Category::all();
             $post = Post::findOrFail($id);
-            $comments = Comment::where('post_id', $post->id)->get();
+//            $comments = Comment::where('post_id', $post->id)->get();
+            $comments = Comment::where('post_id', $post->id)
+                ->whereNull('parent_id') // Lấy ra bình luận gốc (không có bình luận cha)
+                ->with('children') // Lấy ra các bình luận con
+                ->get();
             $author = User::find($post->user_id);
         } catch (\Exception $e) {
             return view('errors.404');
