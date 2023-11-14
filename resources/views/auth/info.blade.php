@@ -23,7 +23,7 @@
         <article class="carousel slide my-4 ">
             <div class="row">
                 <div class="col-6 border bg-light">
-                    <p class="text-center text-uppercase fw-bold"> Thông tin người dùng</p>
+                    <p class="text-center text-uppercase fw-bold">User Information</p>
                     <div class="row border bg-light     ">
                         <div class="col-5">
                             <p><b>Full Name:</b> {{ $user->full_name }}</p>
@@ -57,7 +57,7 @@
                 <div class="col-6 border bg-light">
                     <div class="row">
                         <div class="col-12 ">
-                            <p class="text-center text-uppercase fw-bold"> Thông tin tài khoản</p>
+                            <p class="text-center text-uppercase fw-bold">Account Information</p>
                             <div class="row border bg-light">
                                 <div class="col-3">
                                     <div class="col-md-12">
