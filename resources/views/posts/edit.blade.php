@@ -87,7 +87,6 @@
                     });
             });
         </script>
-
         {!! Form::close() !!}
     </div>
 @endsection

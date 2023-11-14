@@ -38,6 +38,11 @@ class CommentController extends Controller
             $comment->name = $user->username;
             $comment->email = $user->email;
             $comment->avatar = $user->avatar;
+
+            if ($request->has('parent_id')) {
+                $parentComment = Comment::find($request->input('parent_id'));
+                $comment->parent()->associate($parentComment);
+            }
             $comment->save();
             return redirect()->back()->with('success', 'Comment added successfully.');
         } catch (QueryException $e) {
