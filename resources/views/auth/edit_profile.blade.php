@@ -16,7 +16,7 @@
     </script>
     <div class="container bg-light rounded">
         <div class="row border bg-light">
-            <p class="text-center text-uppercase fw-bold border bg-light"> Cập nhật thông tin cá nhân</p>
+            <p class="text-center text-uppercase fw-bold border bg-light"> Update personal information</p>
             <div class="col-6">
                 {!! Form::model($user, ['route' => ['profile.update'], 'method' => 'PUT', 'enctype' => 'multipart/form-data'])  !!}
                 <div class="col-md-12">
@@ -102,7 +102,9 @@
             </div>
 
             <div class="col-12">
-                <button type="submit" class="btn btn-primary ">Update Profile</button>
+                <button type="submit" class="btn btn-outline-primary">
+                    Update Profile <i class="fas fa-edit"></i>
+                </button>
             </div>
 
             {!! Form::close() !!}
