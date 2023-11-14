@@ -47,7 +47,7 @@ class LoginController extends Controller
             $this->setRememberMeExpiration($user);
         endif;
 
-        return $this->authenticated($request, $user);
+        return $this->authenticated();
     }
 
     /**
@@ -58,7 +58,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    protected function authenticated(Request $request, $user)
+    protected function authenticated()
     {
         $categories = Category::all();
         $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(4);
