@@ -55,7 +55,7 @@
 
         <div class="form-group">
             {!! Form::label('describe_short', 'Short Description') !!}
-            {!! Form::text('describe_short', null, ['class' => 'form-control']) !!}
+            {!! Form::textarea('describe_short', null, ['class' => 'form-control', 'id' => 'describe-editor']) !!}
             @if($errors->has('describe_short'))
                 <div class="alert alert-danger">{{ $errors->first('describe_short') }}</div>
             @endif
@@ -82,6 +82,13 @@
             document.addEventListener('DOMContentLoaded', function () {
                 ClassicEditor
                     .create(document.querySelector('#content-editor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                ClassicEditor
+                    .create(document.querySelector('#describe-editor'))
                     .catch(error => {
                         console.error(error);
                     });

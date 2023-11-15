@@ -33,8 +33,13 @@
                         </div>
                         <div class="col-3">
                             <div class="col-md-12 text-center">
-                                <img src="{{ $user->avatar ? asset($user->avatar) : '#' }}"
-                                     class="img-thumbnail" style="max-width: 150px;">
+                                @if(auth()->user()->avatar)
+                                    <img class="img-thumbnail" src="{{ asset(auth()->user()->avatar) }}"
+                                         alt="Image Description" style="max-width: 150px;">
+                                @else
+                                    <img class="img-thumbnail" src="{{ asset('images/default_image.jpg') }}"
+                                         alt="Image Description" style="max-width: 150px;">
+                                @endif
                                 @if($errors->has('avatar'))
                                     <div class="alert alert-danger">{{ $errors->first('avatar') }}</div>
                                 @endif
@@ -66,7 +71,8 @@
                                 </div>
                                 <div class="col-10">
                                     <div class="col-md-12">
-                                        <input type="text" readonly class="form-control" placeholder="{{ $user->username}}">
+                                        <input type="text" readonly class="form-control"
+                                               placeholder="{{ $user->username}}">
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -81,7 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="col-5">
-                                    <form action="{{ route('profile.edit') }}"
+                                    <form action="{{ route('profile.changePassword') }}"
                                           style="display: inline;">
                                         <button type="submit" class="btn btn-outline-primary">
                                             Change Password <i class="fas fa-edit"></i>
