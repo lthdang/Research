@@ -75,7 +75,7 @@
                             </div>
                         @else
                             <div class="avatar avatar-sm avatar-circle">
-                                <img src="{{ asset('images/default_avatar.jpg') }}" alt="Image Description">
+                                <img class="avatar-img" src="{{ asset('images/default_image.jpg') }}" alt="Image Description">
                                 <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                             </div>
                         @endif
@@ -87,8 +87,18 @@
                         <div class="dropdown-item-text">
                             <div class="media align-items-center">
                                 <div class="avatar avatar-sm avatar-circle mr-2">
-                                    <img class="avatar-img" src="{{ asset(auth()->user()->avatar) }}"
-                                         alt="Image Description">
+                                    @if(auth()->user()->avatar)
+                                        <div class="avatar avatar-sm avatar-circle">
+                                            <img class="avatar-img" src="{{ asset(auth()->user()->avatar) }}"
+                                                 alt="Image Description">
+                                            <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                                        </div>
+                                    @else
+                                        <div class="avatar avatar-sm avatar-circle">
+                                            <img class="avatar-img" src="{{ asset('images/default_image.jpg') }}" alt="Image Description">
+                                            <span class="avatar-status avatar-sm-status avatar-status-success"></span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="media-body">
                                     <span class="card-title h5"> {{ auth()->user()->username }}</span>

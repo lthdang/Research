@@ -51,7 +51,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/category/{category}', 'PostController@getPostsByCategory')->name('posts.byCategory');
     Route::get('/category_admin/{category}', 'PostController@getPostsByCategoryAdmin')->name('posts.byCategoryAdmin');
 
-
     Route::group(['middleware' => ['guest']], function () {
 
         /**
@@ -109,5 +108,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          */
         Route::post('/comments', 'CommentController@store')->name('comments.store');
 
+        /**
+         * Change Password
+         */
+        Route::get('/change-password', 'ChangePasswordController@index')->name('profile.changePassword');
+        Route::post('/change-password', 'ChangePasswordController@store')->name('change.password');
     });
 });

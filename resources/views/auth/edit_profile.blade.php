@@ -69,9 +69,15 @@
                 <div class="col-md-12">
                     <p><b>Avatar</b></p>
                     {!! Form::file('avatar', ['class' => 'form-control', 'onchange' => 'displayImage(this)']) !!}
-                    <img id="avatar-preview" src="{{ $user->avatar ? asset($user->avatar) : '#' }}"
-                         alt="Avatar Preview"
-                         class="img-thumbnail" style="max-width: 100px;">
+                    @if(auth()->user()->avatar)
+                        <img id="avatar-preview" class="img-thumbnail" src="{{ asset(auth()->user()->avatar) }}"
+                             alt="Avatar Preview" style="max-width: 100px;">
+
+                    @else
+                        <img id="avatar-preview" class="img-thumbnail" src="{{ asset('images/default_image.jpg') }}"
+                             alt="Avatar Preview" style="max-width: 100px;">
+
+                    @endif
                     @if($errors->has('avatar'))
                         <div class="alert alert-danger">{{ $errors->first('avatar') }}</div>
                     @endif

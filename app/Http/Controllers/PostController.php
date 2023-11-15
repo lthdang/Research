@@ -97,7 +97,7 @@ class PostController extends Controller
     {
         try {
             $categories = Category::all();
-            $posts = Post::where('category_id', $category)->orderBy('id', 'desc')->paginate(4);
+            $posts = Post::where('category_id', $category)-> where('status', 'published')->orderBy('id', 'desc')->paginate(4);
         } catch (\Exception $e) {
             return view('errors.404');
         }
