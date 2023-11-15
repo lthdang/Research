@@ -60,8 +60,15 @@ class LoginController extends Controller
      */
     protected function authenticated()
     {
+        $user = auth()->user();
         $categories = Category::all();
         $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(4);
-        return view('home.post', compact('posts', 'categories'));
+        if ($user->level == 1) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->level == 2) {
+            return view('home.post', compact('posts', 'categories'));
+        } else {
+            return view('home.post', compact('posts', 'categories'));
+        }
     }
 }

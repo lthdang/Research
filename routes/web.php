@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\ValidateToken;
 
 
 /*
@@ -17,9 +16,24 @@ use App\Http\Middleware\ValidateToken;
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     /**
+     *  Routes Admin
+     */
+    Route::group(['middleware' => ['admin']], function () {
+        Route::get('/admin', 'AdminController@index')->name('admin.dashboard');
+        Route::get('/admin/user', 'AdminController@manageUsers')->name('admin.users');
+        Route::get('/admin/category', 'AdminController@manageCategories')->name('admin.categories');
+        Route::get('/admin/statistics', 'AdminController@viewStatistics')->name('admin.statistics');
+        Route::get('/admin/edit', 'AdminController@edit')->name('admin.edit');
+        Route::put('/admin/update', 'AdminController@update')->name('admin.update');
+        Route::get('/admin/info', 'AdminController@info')->name('admin.info');
+        Route::get('/admin/users/edit/{id}', 'AdminController@editUser')->name('admin.users_edit');
+
+    });
+
+    /**
      * Home Routes
      */
-    Route::get('/admin', 'HomeController@index')->name('home.index');
+    Route::get('/user', 'HomeController@index')->name('home.index');
     Route::get('/', 'HomeController@post')->name('home.post');
 
     /**
@@ -27,7 +41,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
      */
     Route::get('/posts/detail/{id}', 'PostController@show')->name('posts.show');
     Route::get('/posts/review/{id}', 'PostController@review')->name('posts.review');
-//    ->middleware('validateToken')
     Route::get('/posts/search', 'PostController@search')->name('posts.search');
 
 

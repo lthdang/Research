@@ -45,23 +45,11 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
-                    <a href="{{ route('home.post') }}" class="btn btn-outline-light me-2">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light me-2">
                         <i class="fas fa-home"></i> Home
                     </a>
                 </li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="{{ route('posts.search') }}">
-                @csrf
-                <div class="input-group">
-                    <form class="d-flex">
-                        <input type="search" name="keyword" class="form-control form-control-line"
-                               placeholder="Search..."
-                               aria-label="Search">
-                        <button class="btn btn-outline-success border" type="submit"><i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </form>
 
             @auth
                 <div class="dropdown">
@@ -97,16 +85,9 @@
                             </div>
                         </div>
                         <div class="dropdown-divider "></div>
-                        <a class="dropdown-item " href="{{ route('profile.info') }}">
+                        <a class="dropdown-item " href="{{ route('admin.info') }}">
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate"
                                   title="Profile &amp; account">Profile &amp; account</span>
-                        </a>
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <span class="text-truncate pr-2"
-                                  title="Profile &amp; account">Update account information</span>
-                        </a>
-                        <a class="dropdown-item" href="{{ route('home.index') }}">
-                            <span class="text-truncate pr-2" title="Settings">Manager post</span>
                         </a>
                         <a class="dropdown-item" href="#">
                             <span class="text-truncate pr-2" title="Settings">Settings</span>

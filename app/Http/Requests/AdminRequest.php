@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
-class ProfileRequest extends FormRequest
+class AdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -49,10 +49,9 @@ class ProfileRequest extends FormRequest
             'email.email'=>'Email address is not valid.',
             'email.unique'=>'This email address is already in use.',
             'phone'=>[
-                'max'=>'The phone may not be greater than :max characters.',
                 'required'=>'This phone field is required.',
                 'regex'=> 'The number phone is not valid',
-                ],
+            ],
             'avatar.image'=>'The image must be an image file.',
             'avatar.mimes'=>'The image must be a file of type: :values.',
             'brith_day'=>[
