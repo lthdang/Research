@@ -51,6 +51,7 @@ class ProfileRequest extends FormRequest
             'phone'=>[
                 'required'=>'This phone field is required.',
                 'regex'=> 'The number phone is not valid',
+                'max'=>'The number phone may not be greater than :max characters.'
                 ],
             'avatar.image'=>'The image must be an image file.',
             'avatar.mimes'=>'The image must be a file of type: :values.',

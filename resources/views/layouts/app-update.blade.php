@@ -31,11 +31,19 @@
     <link href="{{asset('assets/css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
-@include('layouts.partials.navbar')
-<div class="container">
-    @yield('content')
+<div class="container-fluid min-vh-100 d-flex flex-column">
+    <div class="row">
+        @include('layouts.partials.navbar')
+    </div>
+    <div class=" flex-grow-1">
+        <div class="container ">
+            @yield('content')
+        </div>
+    </div>
+    <div class="row">
+        @include('layouts.partials.footer')
+    </div>
 </div>
-@include('layouts.partials.footer')
 <script src="{{asset('assets/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 </body>
 </html>

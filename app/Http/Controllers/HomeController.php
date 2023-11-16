@@ -19,9 +19,9 @@ class HomeController extends Controller
         $categories = Category::all();
         if (auth()->check()) {
             $user_id = auth()->user()->id;
-            $posts = Post::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(5);
+            $posts = Post::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(10);
         } else {
-            $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(5);
+            $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(10);
         }
         return view('home.index', compact('posts', 'categories'));
     }
@@ -34,7 +34,7 @@ class HomeController extends Controller
     public function post()
     {
         $categories = Category::all();
-        $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(5);
+        $posts = Post::where('status', 'published')->orderBy('id', 'desc')->paginate(10);
         return view('home.post', compact('posts', 'categories'));
     }
 }
