@@ -29,17 +29,17 @@ class ChangePasswordController extends Controller
      */
     public function store(PasswordRequest $request)
     {
-//        $this->validate($request, [
-//            'current_password' => 'required|string',
-//            'new_password' => 'required|min:8|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])(?=.*[0-9]).+$/'
-//        ]);
         $currentPasswordStatus = Hash::check($request->current_password, auth()->user()->password);
+        $newPasswordStatus = Hash::check($request->new_password,auth()->user()->password);
         if (!$currentPasswordStatus) {
             return back()->with('error', 'old password Doesnt match');
+        }
+        if ($newPasswordStatus) {
+            return back()->with('error', 'new password Must not match old password');
         }
         User::whereId(auth()->user()->id)->update([
             'password' => Hash::make($request->new_password)
         ]);
-        return redirect()->back()->with('message', 'Password Updated Successfully');
+        return redirect()->route('profile.info')->with('success', 'Password Updated Successfully');
     }
 }

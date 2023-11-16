@@ -25,21 +25,10 @@ class PostController extends Controller
         try {
             $categories = Category::all();
             $keyword = $request->input('keyword');
-            if (auth()->check() && auth()->user()) {
-                $user = auth()->user();
-                $posts = Post::where(function ($query) use ($keyword, $user) {
-                    $query->where('user_id', $user->id)
-                        ->where(function ($query) use ($keyword) {
-                            $query->where('title', 'LIKE', '%' . $keyword . '%')
-                                ->orWhere('content', 'LIKE', '%' . $keyword . '%');
-                        });
-                })->paginate(5);
-            } else {
-                $posts = Post::where(function ($query) use ($keyword) {
-                    $query->where('title', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('content', 'LIKE', '%' . $keyword . '%');
-                })->paginate(5);
-            }
+            $posts = Post::where(function ($query) use ($keyword) {
+                $query->where('title', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('content', 'LIKE', '%' . $keyword . '%');
+            })->paginate(10);
         } catch (\Exception $e) {
             return view('errors.404');
         }
@@ -97,7 +86,7 @@ class PostController extends Controller
     {
         try {
             $categories = Category::all();
-            $posts = Post::where('category_id', $category)-> where('status', 'published')->orderBy('id', 'desc')->paginate(4);
+            $posts = Post::where('category_id', $category)->where('status', 'published')->orderBy('id', 'desc')->paginate(10);
         } catch (\Exception $e) {
             return view('errors.404');
         }
@@ -116,7 +105,7 @@ class PostController extends Controller
             $categories = Category::all();
             if (auth()->check() && auth()->user()) {
                 $user = auth()->user();
-                $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(4);
+                $posts = Post::where('category_id', $category)->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
             }
         } catch (\Exception $e) {
             return view('errors.404');

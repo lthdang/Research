@@ -9,7 +9,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="bg-light p-2 rounded">
+    <div class="bg-light p-5 rounded">
         @auth
             <a href="{{ route('posts.create') }}" class="btn btn-lg btn-outline-primary fa fa-plus-circle" role="button">
                 New Post</a>
@@ -26,7 +26,7 @@
                                                      class="img-thumbnail img-fixed-size" alt="Post Image"
                                                      style="max-width: 200px;">
                                             @else
-                                                <img src="{{ asset('images/default_image.jpg') }}" class="img-thumbnail"
+                                                <img src="{{ asset('images/default_image.jpg') }}" class="img-thumbnail img-fixed-size"
                                                      alt="Default Image" style="max-width: 200px;">
                                             @endif
                                         </a>

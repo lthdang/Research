@@ -24,18 +24,23 @@
             <div class="row">
                 <div class="col-6 border bg-light">
                     <p class="text-center text-uppercase fw-bold">User Information</p>
-                    <div class="row border bg-light     ">
+                    <div class="row border bg-light">
                         <div class="col-5">
                             <p><b>Full Name:</b> {{ $user->full_name }}</p>
                             <p><b>Email:</b> {{ $user->email }}</p>
                             <p><b>Phone:</b> {{ $user->phone }}</p>
+                            @if($user->sex == 0)
+                                <p><b>Sex:</b> Nam</p>
+                            @else
+                                <p><b>Sex:</b> Nữ</p>
+                            @endif
                             <p><b>Birth Day:</b> {{ $user->brith_day }}</p>
                         </div>
-                        <div class="col-3">
+                        <div class="col-7">
                             <div class="col-md-12 text-center">
                                 @if(auth()->user()->avatar)
                                     <img class="img-thumbnail" src="{{ asset(auth()->user()->avatar) }}"
-                                         alt="Image Description" style="max-width: 150px;">
+                                         alt="Image Description" style="max-width: 250px;">
                                 @else
                                     <img class="img-thumbnail" src="{{ asset('images/default_image.jpg') }}"
                                          alt="Image Description" style="max-width: 150px;">
@@ -58,7 +63,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-6 border bg-light">
                     <div class="row">
                         <div class="col-12 ">

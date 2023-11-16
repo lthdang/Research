@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('content', 'Content') !!}
+            {!! Form::label('content', 'Content *') !!}
             {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'content-editor']) !!}
             @if($errors->has('content'))
                 <div class="alert alert-danger">{{ $errors->first('content') }}</div>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('describe_short', 'Short Description') !!}
+            {!! Form::label('describe_short', 'Short Description *') !!}
             {!! Form::textarea('describe_short', null, ['class' => 'form-control', 'id' => 'describe-editor']) !!}
             @if($errors->has('describe_short'))
                 <div class="alert alert-danger">{{ $errors->first('describe_short') }}</div>
