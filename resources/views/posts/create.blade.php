@@ -1,6 +1,12 @@
 @extends('layouts.app-update')
 @section('title','Blog-Create-Post')
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<style type="text/css">
+    .ck-editor__editable_inline {
+        height: 500px;
+    }
+
+</style>
 @section('content')
     <div class="bg-light p-5 rounded">
         <h1>Create a New Post</h1>
@@ -62,7 +68,15 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 ClassicEditor
-                    .create(document.querySelector('#content-editor'))
+                    .create(document.querySelector('#content-editor'),
+                        {
+                            ckfinder:
+                                {
+                                    uploadUrl: "{{route('ckeditor.upload',['_token'=> csrf_token()])}}"
+                                    ,
+                                }
+                        })
+
                     .catch(error => {
                         console.error(error);
                     });

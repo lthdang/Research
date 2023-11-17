@@ -55,6 +55,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     Route::group(['middleware' => ['auth']], function () {
 
+        Route::post('/upload', 'PostController@upload')->name('ckeditor.upload');
         /**
          * Logout Routes
          */
