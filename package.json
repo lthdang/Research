@@ -11,6 +11,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-html-support": "^40.1.0",
         "bootstrap-icons": "^1.11.1"
     }
 }

@@ -18,6 +18,7 @@
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="{{asset('assets/css/vendor.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendor/icon-set/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/ckeditor.css')}}"  rel="stylesheet">
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{{asset('assets/css/theme.min.css?v=1.0')}}">
